@@ -5,7 +5,7 @@ class Database {
     private $db_name = "unity_clinic_db";
     private $username = "root";
     private $password = "";
-    public $conn;
+    private $conn;
 
     public function dbConnection() {
         try{

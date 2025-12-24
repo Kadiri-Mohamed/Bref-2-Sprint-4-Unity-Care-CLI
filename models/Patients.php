@@ -1,0 +1,74 @@
+<?php
+
+class Patient extends Personne {
+    private $conn;
+    
+    public function __construct() {
+        echo $this->id;
+        $db = new Database();
+        $this->conn = $db->dbConnection();
+    }
+    
+    public function getAll() {
+        $sql = "SELECT * FROM patients ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getById($id) {
+        $sql = "SELECT * FROM patients WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function create($data) {
+        $sql = "INSERT INTO patients (nom, prenom, date_naissance, telephone, email, adresse) 
+                VALUES (:nom, :prenom, :date_naissance, :telephone, :email, :adresse)";
+        
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+        public function update($id, $data) {
+        $sql = "UPDATE patients 
+                SET nom = :nom, 
+                    prenom = :prenom, 
+                    date_naissance = :date_naissance, 
+                    telephone = :telephone, 
+                    email = :email, 
+                    adresse = :adresse 
+                WHERE id = :id";
+        
+        $data['id'] = $id;
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+    public function findByname($name) {
+        $sql = "SELECT * FROM patients WHERE nom LIKE :name OR prenom LIKE :name";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+     public function delete($id) {
+        $sql = "DELETE FROM patients WHERE id = :id"; 
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
+    public function count() {
+        $sql = "SELECT COUNT(*) as total FROM patients";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+}   
+?>
