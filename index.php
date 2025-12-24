@@ -1,8 +1,5 @@
 <?php 
 require_once 'autoload.php';
-require_once 'models/Departments.php';
-require_once 'models/Medecins.php';
-require_once 'models/Patients.php';
 
 $db = new Database();
 $conn = $db->dbConnection();

@@ -4,7 +4,6 @@ class Patient extends Personne {
     private $conn;
     
     public function __construct() {
-        echo $this->id;
         $db = new Database();
         $this->conn = $db->dbConnection();
     }
