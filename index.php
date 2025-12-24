@@ -294,7 +294,7 @@ while (true) {
             }
             break;
 
-        case '3': // Department
+        case '3':
             $departmentChoice = '';
             while ($departmentChoice !== '0') {
                 Menu::showDepartmentMenu();
@@ -302,23 +302,96 @@ while (true) {
                 
                 switch ($departmentChoice) {
                     case '1':
-                        $departments = $departmentModel->getAll();
-                        print_r($departments);
+                        echo "=== Ajouter un departement ===\n";
+                        echo "Nom: ";
+                        $nom = trim(fgets(STDIN));
+                        echo "Description: ";
+                        $description = trim(fgets(STDIN));
+                        
+                        $data = [
+                            'nom' => $nom,
+                            'description' => $description
+                        ];
+                        
+                        if($departmentModel->create($data)) {
+                            echo "Departement ajoute avec succes!\n";
+                        } else {
+                            echo "Erreur dans l'ajout du departement.\n";
+                        }
                         break;
+                        
                     case '2':
-                        // Add department logic
+                        echo "=== Liste des departements ===\n";
+                        $departments = $departmentModel->getAll();
+                        if(empty($departments)) {
+                            echo "Aucun departement trouve.\n";
+                        } else {
+                            foreach($departments as $department) {
+                                echo "ID: " . $department['id'] . "\n";
+                                echo "Nom: " . $department['nom'] . "\n";
+                                echo "Description: " . $department['description'] . "\n";
+                                echo "Cree le: " . $department['created_at'] . "\n";
+                                echo "-------------------------\n";
+                            }
+                        }
                         break;
+                        
                     case '3':
-                        // Update department logic
+                        echo "=== Modifier un departement ===\n";
+                        echo "ID du departement a modifier: ";
+                        $id = trim(fgets(STDIN));
+                        
+                        $department = $departmentModel->getById($id);
+                        if(!$department) {
+                            echo "Departement non trouve.\n";
+                            break;
+                        }
+                        
+                        echo "Nom [" . $department['nom'] . "]: ";
+                        $nom = trim(fgets(STDIN));
+                        $nom = empty($nom) ? $department['nom'] : $nom;
+                        
+                        echo "Description [" . $department['description'] . "]: ";
+                        $description = trim(fgets(STDIN));
+                        $description = empty($description) ? $department['description'] : $description;
+                        
+                        $data = [
+                            'nom' => $nom,
+                            'description' => $description
+                        ];
+                        
+                        if($departmentModel->update($id, $data)) {
+                            echo "Departement modifie avec succes!\n";
+                        } else {
+                            echo "Erreur dans la modification du departement.\n";
+                        }
                         break;
+                        
                     case '4':
-                        // Delete department logic
+                        echo "=== Supprimer un departement ===\n";
+                        echo "ID du departement a supprimer: ";
+                        $id = trim(fgets(STDIN));
+                        
+                        echo "vous voulez supprimer ce departement? (oui/non): ";
+                        $confirm = trim(fgets(STDIN));
+                        
+                        if(strtolower($confirm) === 'oui') {
+                            if($departmentModel->delete($id)) {
+                                echo "Departement supprime avec succes!\n";
+                            } else {
+                                echo "Erreur dans la suppression du departement.\n";
+                            }
+                        } else {
+                            echo "Suppression annulee.\n";
+                        }
                         break;
+                        
                     case '0':
-                        echo "Returning to main menu...\n";
+                        echo "Retour au menu principal...\n";
                         break;
+                        
                     default:
-                        echo "Invalid option. Please try again.\n";
+                        echo "Option invalide. Veuillez reessayer.\n";
                 }
             }
             break;
