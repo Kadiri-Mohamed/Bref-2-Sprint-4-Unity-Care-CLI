@@ -124,7 +124,7 @@ while (true) {
                         if($patientModel->update($id, $data)) {
                             echo "Patient modifie avec succes!\n";
                         } else {
-                            echo "Erreur lors de la modification du patient.\n";
+                            echo "Erreur dans la modification du patient.\n";
                         }
                         break;
                         
@@ -140,7 +140,7 @@ while (true) {
                             if($patientModel->delete($id)) {
                                 echo "Patient supprime avec succes!\n";
                             } else {
-                                echo "Erreur lors de la suppression du patient.\n";
+                                echo "Erreur dans la suppression du patient.\n";
                             }
                         } else {
                             echo "Suppression annulee.\n";
@@ -157,7 +157,7 @@ while (true) {
             }
             break;
 
-        case '2': // Medecin
+        case '2':
             $medecinChoice = '';
             while ($medecinChoice !== '0') {
                 Menu::showMedecinMenu();
@@ -165,22 +165,131 @@ while (true) {
                 
                 switch ($medecinChoice) {
                     case '1':
-                        // Add medecin logic
+                        echo "=== Ajouter un medecin ===\n";
+                        echo "Nom: ";
+                        $nom = trim(fgets(STDIN));
+                        echo "Prenom: ";
+                        $prenom = trim(fgets(STDIN));
+                        echo "Specialite: ";
+                        $specialite = trim(fgets(STDIN));
+                        echo "ID du departement: ";
+                        $department_id = trim(fgets(STDIN));
+                        echo "Email: ";
+                        $email = trim(fgets(STDIN));
+                        echo "Telephone: ";
+                        $telephone = trim(fgets(STDIN));
+                        
+                        $data = [
+                            'nom' => $nom,
+                            'prenom' => $prenom,
+                            'specialite' => $specialite,
+                            'department_id' => $department_id,
+                            'email' => $email,
+                            'telephone' => $telephone
+                        ];
+                        
+                        if($medecinModel->create($data)) {
+                            echo "Medecin ajoute avec succes!\n";
+                        } else {
+                            echo "Erreur dans l'ajout du medecin.\n";
+                        }
                         break;
+                        
                     case '2':
-                        // View medecins logic
+                        echo "=== Liste des medecins ===\n";
+                        $medecins = $medecinModel->getAll();
+                        if(empty($medecins)) {
+                            echo "Aucun medecin trouve.\n";
+                        } else {
+                            foreach($medecins as $medecin) {
+                                echo "ID: " . $medecin['id'] . "\n";
+                                echo "Nom: " . $medecin['nom'] . " " . $medecin['prenom'] . "\n";
+                                echo "Specialite: " . $medecin['specialite'] . "\n";
+                                echo "Departement: " . $medecin['department_nom'] . "\n";
+                                echo "Email: " . $medecin['email'] . "\n";
+                                echo "Telephone: " . $medecin['telephone'] . "\n";
+                                echo "Cree le: " . $medecin['created_at'] . "\n";
+                                echo "-------------------------\n";
+                            }
+                        }
                         break;
+                        
                     case '3':
-                        // Update medecin logic
+                        echo "=== Modifier un medecin ===\n";
+                        echo "ID du medecin a modifier: ";
+                        $id = trim(fgets(STDIN));
+                        
+                        $medecin = $medecinModel->getById($id);
+                        if(!$medecin) {
+                            echo "Medecin non trouve.\n";
+                            break;
+                        }
+                        
+                        echo "Nom [" . $medecin['nom'] . "]: ";
+                        $nom = trim(fgets(STDIN));
+                        $nom = empty($nom) ? $medecin['nom'] : $nom;
+                        
+                        echo "Prenom [" . $medecin['prenom'] . "]: ";
+                        $prenom = trim(fgets(STDIN));
+                        $prenom = empty($prenom) ? $medecin['prenom'] : $prenom;
+                        
+                        echo "Specialite [" . $medecin['specialite'] . "]: ";
+                        $specialite = trim(fgets(STDIN));
+                        $specialite = empty($specialite) ? $medecin['specialite'] : $specialite;
+                        
+                        echo "ID du departement [" . $medecin['department_id'] . "]: ";
+                        $department_id = trim(fgets(STDIN));
+                        $department_id = empty($department_id) ? $medecin['department_id'] : $department_id;
+                        
+                        echo "Email [" . $medecin['email'] . "]: ";
+                        $email = trim(fgets(STDIN));
+                        $email = empty($email) ? $medecin['email'] : $email;
+                        
+                        echo "Telephone [" . $medecin['telephone'] . "]: ";
+                        $telephone = trim(fgets(STDIN));
+                        $telephone = empty($telephone) ? $medecin['telephone'] : $telephone;
+                        
+                        $data = [
+                            'nom' => $nom,
+                            'prenom' => $prenom,
+                            'specialite' => $specialite,
+                            'department_id' => $department_id,
+                            'email' => $email,
+                            'telephone' => $telephone
+                        ];
+                        
+                        if($medecinModel->update($id, $data)) {
+                            echo "Medecin modifie avec succes!\n";
+                        } else {
+                            echo "Erreur dans la modification du medecin.\n";
+                        }
                         break;
+                        
                     case '4':
-                        // Delete medecin logic
+                        echo "=== Supprimer un medecin ===\n";
+                        echo "ID du medecin a supprimer: ";
+                        $id = trim(fgets(STDIN));
+                        
+                        echo "vous voulez supprimer ce medecin? (oui/non): ";
+                        $confirm = trim(fgets(STDIN));
+                        
+                        if(strtolower($confirm) === 'oui') {
+                            if($medecinModel->delete($id)) {
+                                echo "Medecin supprime avec succes!\n";
+                            } else {
+                                echo "Erreur dans la suppression du medecin.\n";
+                            }
+                        } else {
+                            echo "Suppression annulee.\n";
+                        }
                         break;
+                        
                     case '0':
-                        echo "Returning to main menu...\n";
+                        echo "Retour au menu principal...\n";
                         break;
+                        
                     default:
-                        echo "Invalid option. Please try again.\n";
+                        echo "Option invalide. Veuillez reessayer.\n";
                 }
             }
             break;
