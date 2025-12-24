@@ -8,8 +8,8 @@ class Menu{
         echo "==============================" . "\n";
         echo "   UNITY CARE - CLI SYSTEM   " . "\n";
         echo "==============================" . "\n";
-        echo "1. Gestion des medecins" . "\n";
-        echo "2. Gestion des patients" . "\n";
+        echo "1. Gestion des patients" . "\n";
+        echo "2. Gestion des medecins" . "\n";
         echo "3. Gestion des departements" . "\n";
         echo "0. Quitter" . "\n";
         echo "------------------------------" . "\n";
