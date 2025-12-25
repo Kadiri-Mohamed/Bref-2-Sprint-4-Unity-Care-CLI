@@ -1,7 +1,7 @@
 <?php
 
 
-class Department {
+class Department implements BaseModel {
     private $conn;
     
     public function __construct() {

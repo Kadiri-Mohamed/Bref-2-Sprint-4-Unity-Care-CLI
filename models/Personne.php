@@ -1,6 +1,6 @@
 <?php
 
-abstract class Personne
+abstract class Personne implements BaseModel
 {
     protected int $id;
     protected string $nom;
