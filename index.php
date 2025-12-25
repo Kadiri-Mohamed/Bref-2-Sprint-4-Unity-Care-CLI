@@ -29,18 +29,72 @@ while (true) {
                 switch ($patientChoice) {
                     case '1':
                         echo "=== Ajouter un patient ===\n";
-                        echo "Nom: ";
-                        $nom = trim(fgets(STDIN));
-                        echo "Prenom: ";
-                        $prenom = trim(fgets(STDIN));
-                        echo "Date de naissance (YYYY-MM-DD): ";
-                        $dateNaissance = trim(fgets(STDIN));
-                        echo "Telephone: ";
-                        $telephone = trim(fgets(STDIN));
-                        echo "Email: ";
-                        $email = trim(fgets(STDIN));
-                        echo "Adresse: ";
-                        $adresse = trim(fgets(STDIN));
+                        
+                        do {
+                            echo "Nom: ";
+                            $nom = trim(fgets(STDIN));
+                            if (!Validator::required($nom)) {
+                                echo "Le nom est obligatoire.\n";
+                            } elseif (!Validator::alpha($nom)) {
+                                echo "Le nom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($nom, 2, 50)) {
+                                echo "Le nom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::required($nom) || !Validator::alpha($nom) || !Validator::length($nom, 2, 50));
+                        
+                        do {
+                            echo "Prenom: ";
+                            $prenom = trim(fgets(STDIN));
+                            if (!Validator::required($prenom)) {
+                                echo "Le prenom est obligatoire.\n";
+                            } elseif (!Validator::alpha($prenom)) {
+                                echo "Le prenom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($prenom, 2, 50)) {
+                                echo "Le prenom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::required($prenom) || !Validator::alpha($prenom) || !Validator::length($prenom, 2, 50));
+                        
+                        do {
+                            echo "Date de naissance (YYYY-MM-DD): ";
+                            $dateNaissance = trim(fgets(STDIN));
+                            if (!Validator::required($dateNaissance)) {
+                                echo "La date de naissance est obligatoire.\n";
+                            } elseif (!Validator::date($dateNaissance)) {
+                                echo "Format de date invalide. Utilisez YYYY-MM-DD.\n";
+                            }
+                        } while (!Validator::required($dateNaissance) || !Validator::date($dateNaissance));
+                        
+                        do {
+                            echo "Telephone (format: +212XXXXXXXXX): ";
+                            $telephone = trim(fgets(STDIN));
+                            if (!Validator::required($telephone)) {
+                                echo "Le telephone est obligatoire.\n";
+                            } elseif (!Validator::phone($telephone)) {
+                                echo "Format de telephone invalide. Utilisez le format +212XXXXXXXXX.\n";
+                            }
+                        } while (!Validator::required($telephone) || !Validator::phone($telephone));
+                        
+                        do {
+                            echo "Email: ";
+                            $email = trim(fgets(STDIN));
+                            if (!Validator::required($email)) {
+                                echo "L'email est obligatoire.\n";
+                            } elseif (!Validator::email($email)) {
+                                echo "Format d'email invalide.\n";
+                            }
+                        } while (!Validator::required($email) || !Validator::email($email));
+                        
+                        do {
+                            echo "Adresse: ";
+                            $adresse = trim(fgets(STDIN));
+                            if (!Validator::required($adresse)) {
+                                echo "L'adresse est obligatoire.\n";
+                            } elseif (!Validator::alphanumeric($adresse)) {
+                                echo "L'adresse contient des caracteres non autorises.\n";
+                            } elseif (!Validator::length($adresse, 5, 200)) {
+                                echo "L'adresse doit contenir entre 5 et 200 caracteres.\n";
+                            }
+                        } while (!Validator::required($adresse) || !Validator::alphanumeric($adresse) || !Validator::length($adresse, 5, 200));
                         
                         $data = [
                             'nom' => $nom,
@@ -88,29 +142,71 @@ while (true) {
                             break;
                         }
                         
-                        echo "Nom [" . $patient['nom'] . "]: ";
-                        $nom = trim(fgets(STDIN));
-                        $nom = empty($nom) ? $patient['nom'] : $nom;
+                        do {
+                            echo "Nom [" . $patient['nom'] . "]: ";
+                            $nom = trim(fgets(STDIN));
+                            $nom = empty($nom) ? $patient['nom'] : $nom;
+                            
+                            if (!Validator::alpha($nom)) {
+                                echo "Le nom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($nom, 2, 50)) {
+                                echo "Le nom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::alpha($nom) || !Validator::length($nom, 2, 50));
                         
-                        echo "Prenom [" . $patient['prenom'] . "]: ";
-                        $prenom = trim(fgets(STDIN));
-                        $prenom = empty($prenom) ? $patient['prenom'] : $prenom;
+                        do {
+                            echo "Prenom [" . $patient['prenom'] . "]: ";
+                            $prenom = trim(fgets(STDIN));
+                            $prenom = empty($prenom) ? $patient['prenom'] : $prenom;
+                            
+                            if (!Validator::alpha($prenom)) {
+                                echo "Le prenom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($prenom, 2, 50)) {
+                                echo "Le prenom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::alpha($prenom) || !Validator::length($prenom, 2, 50));
                         
-                        echo "Date de naissance [" . $patient['date_naissance'] . "]: ";
-                        $dateNaissance = trim(fgets(STDIN));
-                        $dateNaissance = empty($dateNaissance) ? $patient['date_naissance'] : $dateNaissance;
+                        do {
+                            echo "Date de naissance [" . $patient['date_naissance'] . "]: ";
+                            $dateNaissance = trim(fgets(STDIN));
+                            $dateNaissance = empty($dateNaissance) ? $patient['date_naissance'] : $dateNaissance;
+                            
+                            if (!Validator::date($dateNaissance)) {
+                                echo "Format de date invalide. Utilisez YYYY-MM-DD.\n";
+                            }
+                        } while (!Validator::date($dateNaissance));
                         
-                        echo "Telephone [" . $patient['telephone'] . "]: ";
-                        $telephone = trim(fgets(STDIN));
-                        $telephone = empty($telephone) ? $patient['telephone'] : $telephone;
+                        do {
+                            echo "Telephone [" . $patient['telephone'] . "]: ";
+                            $telephone = trim(fgets(STDIN));
+                            $telephone = empty($telephone) ? $patient['telephone'] : $telephone;
+                            
+                            if (!Validator::phone($telephone)) {
+                                echo "Format de telephone invalide. Utilisez le format +212XXXXXXXXX.\n";
+                            }
+                        } while (!Validator::phone($telephone));
                         
-                        echo "Email [" . $patient['email'] . "]: ";
-                        $email = trim(fgets(STDIN));
-                        $email = empty($email) ? $patient['email'] : $email;
+                        do {
+                            echo "Email [" . $patient['email'] . "]: ";
+                            $email = trim(fgets(STDIN));
+                            $email = empty($email) ? $patient['email'] : $email;
+                            
+                            if (!Validator::email($email)) {
+                                echo "Format d'email invalide.\n";
+                            }
+                        } while (!Validator::email($email));
                         
-                        echo "Adresse [" . $patient['adresse'] . "]: ";
-                        $adresse = trim(fgets(STDIN));
-                        $adresse = empty($adresse) ? $patient['adresse'] : $adresse;
+                        do {
+                            echo "Adresse [" . $patient['adresse'] . "]: ";
+                            $adresse = trim(fgets(STDIN));
+                            $adresse = empty($adresse) ? $patient['adresse'] : $adresse;
+                            
+                            if (!Validator::alphanumeric($adresse)) {
+                                echo "L'adresse contient des caracteres non autorises.\n";
+                            } elseif (!Validator::length($adresse, 5, 200)) {
+                                echo "L'adresse doit contenir entre 5 et 200 caracteres.\n";
+                            }
+                        } while (!Validator::alphanumeric($adresse) || !Validator::length($adresse, 5, 200));
                         
                         $data = [
                             'nom' => $nom,
@@ -132,6 +228,11 @@ while (true) {
                         echo "=== Supprimer un patient ===\n";
                         echo "ID du patient a supprimer: ";
                         $id = trim(fgets(STDIN));
+                        
+                        if (!Validator::integer($id) || !Validator::positive($id)) {
+                            echo "ID invalide.\n";
+                            break;
+                        }
                         
                         echo "vous voulez supprimer ce patient? (oui/non): ";
                         $confirm = trim(fgets(STDIN));
@@ -166,18 +267,72 @@ while (true) {
                 switch ($medecinChoice) {
                     case '1':
                         echo "=== Ajouter un medecin ===\n";
-                        echo "Nom: ";
-                        $nom = trim(fgets(STDIN));
-                        echo "Prenom: ";
-                        $prenom = trim(fgets(STDIN));
-                        echo "Specialite: ";
-                        $specialite = trim(fgets(STDIN));
-                        echo "ID du departement: ";
-                        $department_id = trim(fgets(STDIN));
-                        echo "Email: ";
-                        $email = trim(fgets(STDIN));
-                        echo "Telephone: ";
-                        $telephone = trim(fgets(STDIN));
+                        
+                        do {
+                            echo "Nom: ";
+                            $nom = trim(fgets(STDIN));
+                            if (!Validator::required($nom)) {
+                                echo "Le nom est obligatoire.\n";
+                            } elseif (!Validator::alpha($nom)) {
+                                echo "Le nom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($nom, 2, 50)) {
+                                echo "Le nom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::required($nom) || !Validator::alpha($nom) || !Validator::length($nom, 2, 50));
+                        
+                        do {
+                            echo "Prenom: ";
+                            $prenom = trim(fgets(STDIN));
+                            if (!Validator::required($prenom)) {
+                                echo "Le prenom est obligatoire.\n";
+                            } elseif (!Validator::alpha($prenom)) {
+                                echo "Le prenom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($prenom, 2, 50)) {
+                                echo "Le prenom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::required($prenom) || !Validator::alpha($prenom) || !Validator::length($prenom, 2, 50));
+                        
+                        do {
+                            echo "Specialite: ";
+                            $specialite = trim(fgets(STDIN));
+                            if (!Validator::required($specialite)) {
+                                echo "La specialite est obligatoire.\n";
+                            } elseif (!Validator::alphanumeric($specialite)) {
+                                echo "La specialite contient des caracteres non autorises.\n";
+                            } elseif (!Validator::length($specialite, 2, 100)) {
+                                echo "La specialite doit contenir entre 2 et 100 caracteres.\n";
+                            }
+                        } while (!Validator::required($specialite) || !Validator::alphanumeric($specialite) || !Validator::length($specialite, 2, 100));
+                        
+                        do {
+                            echo "ID du departement: ";
+                            $department_id = trim(fgets(STDIN));
+                            if (!Validator::required($department_id)) {
+                                echo "L'ID du departement est obligatoire.\n";
+                            } elseif (!Validator::integer($department_id) || !Validator::positive($department_id)) {
+                                echo "L'ID du departement doit etre un nombre entier positif.\n";
+                            }
+                        } while (!Validator::required($department_id) || !Validator::integer($department_id) || !Validator::positive($department_id));
+                        
+                        do {
+                            echo "Email: ";
+                            $email = trim(fgets(STDIN));
+                            if (!Validator::required($email)) {
+                                echo "L'email est obligatoire.\n";
+                            } elseif (!Validator::email($email)) {
+                                echo "Format d'email invalide.\n";
+                            }
+                        } while (!Validator::required($email) || !Validator::email($email));
+                        
+                        do {
+                            echo "Telephone (format: +212XXXXXXXXX): ";
+                            $telephone = trim(fgets(STDIN));
+                            if (!Validator::required($telephone)) {
+                                echo "Le telephone est obligatoire.\n";
+                            } elseif (!Validator::phone($telephone)) {
+                                echo "Format de telephone invalide. Utilisez le format +212XXXXXXXXX.\n";
+                            }
+                        } while (!Validator::required($telephone) || !Validator::phone($telephone));
                         
                         $data = [
                             'nom' => $nom,
@@ -225,29 +380,71 @@ while (true) {
                             break;
                         }
                         
-                        echo "Nom [" . $medecin['nom'] . "]: ";
-                        $nom = trim(fgets(STDIN));
-                        $nom = empty($nom) ? $medecin['nom'] : $nom;
+                        do {
+                            echo "Nom [" . $medecin['nom'] . "]: ";
+                            $nom = trim(fgets(STDIN));
+                            $nom = empty($nom) ? $medecin['nom'] : $nom;
+                            
+                            if (!Validator::alpha($nom)) {
+                                echo "Le nom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($nom, 2, 50)) {
+                                echo "Le nom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::alpha($nom) || !Validator::length($nom, 2, 50));
                         
-                        echo "Prenom [" . $medecin['prenom'] . "]: ";
-                        $prenom = trim(fgets(STDIN));
-                        $prenom = empty($prenom) ? $medecin['prenom'] : $prenom;
+                        do {
+                            echo "Prenom [" . $medecin['prenom'] . "]: ";
+                            $prenom = trim(fgets(STDIN));
+                            $prenom = empty($prenom) ? $medecin['prenom'] : $prenom;
+                            
+                            if (!Validator::alpha($prenom)) {
+                                echo "Le prenom ne doit contenir que des lettres, espaces et tirets.\n";
+                            } elseif (!Validator::length($prenom, 2, 50)) {
+                                echo "Le prenom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::alpha($prenom) || !Validator::length($prenom, 2, 50));
                         
-                        echo "Specialite [" . $medecin['specialite'] . "]: ";
-                        $specialite = trim(fgets(STDIN));
-                        $specialite = empty($specialite) ? $medecin['specialite'] : $specialite;
+                        do {
+                            echo "Specialite [" . $medecin['specialite'] . "]: ";
+                            $specialite = trim(fgets(STDIN));
+                            $specialite = empty($specialite) ? $medecin['specialite'] : $specialite;
+                            
+                            if (!Validator::alphanumeric($specialite)) {
+                                echo "La specialite contient des caracteres non autorises.\n";
+                            } elseif (!Validator::length($specialite, 2, 100)) {
+                                echo "La specialite doit contenir entre 2 et 100 caracteres.\n";
+                            }
+                        } while (!Validator::alphanumeric($specialite) || !Validator::length($specialite, 2, 100));
                         
-                        echo "ID du departement [" . $medecin['department_id'] . "]: ";
-                        $department_id = trim(fgets(STDIN));
-                        $department_id = empty($department_id) ? $medecin['department_id'] : $department_id;
+                        do {
+                            echo "ID du departement [" . $medecin['department_id'] . "]: ";
+                            $department_id = trim(fgets(STDIN));
+                            $department_id = empty($department_id) ? $medecin['department_id'] : $department_id;
+                            
+                            if (!Validator::integer($department_id) || !Validator::positive($department_id)) {
+                                echo "L'ID du departement doit etre un nombre entier positif.\n";
+                            }
+                        } while (!Validator::integer($department_id) || !Validator::positive($department_id));
                         
-                        echo "Email [" . $medecin['email'] . "]: ";
-                        $email = trim(fgets(STDIN));
-                        $email = empty($email) ? $medecin['email'] : $email;
+                        do {
+                            echo "Email [" . $medecin['email'] . "]: ";
+                            $email = trim(fgets(STDIN));
+                            $email = empty($email) ? $medecin['email'] : $email;
+                            
+                            if (!Validator::email($email)) {
+                                echo "Format d'email invalide.\n";
+                            }
+                        } while (!Validator::email($email));
                         
-                        echo "Telephone [" . $medecin['telephone'] . "]: ";
-                        $telephone = trim(fgets(STDIN));
-                        $telephone = empty($telephone) ? $medecin['telephone'] : $telephone;
+                        do {
+                            echo "Telephone [" . $medecin['telephone'] . "]: ";
+                            $telephone = trim(fgets(STDIN));
+                            $telephone = empty($telephone) ? $medecin['telephone'] : $telephone;
+                            
+                            if (!Validator::phone($telephone)) {
+                                echo "Format de telephone invalide. Utilisez le format +212XXXXXXXXX.\n";
+                            }
+                        } while (!Validator::phone($telephone));
                         
                         $data = [
                             'nom' => $nom,
@@ -269,6 +466,11 @@ while (true) {
                         echo "=== Supprimer un medecin ===\n";
                         echo "ID du medecin a supprimer: ";
                         $id = trim(fgets(STDIN));
+                        
+                        if (!Validator::integer($id) || !Validator::positive($id)) {
+                            echo "ID invalide.\n";
+                            break;
+                        }
                         
                         echo "vous voulez supprimer ce medecin? (oui/non): ";
                         $confirm = trim(fgets(STDIN));
@@ -303,10 +505,28 @@ while (true) {
                 switch ($departmentChoice) {
                     case '1':
                         echo "=== Ajouter un departement ===\n";
-                        echo "Nom: ";
-                        $nom = trim(fgets(STDIN));
-                        echo "Description: ";
-                        $description = trim(fgets(STDIN));
+                        
+                        do {
+                            echo "Nom: ";
+                            $nom = trim(fgets(STDIN));
+                            if (!Validator::required($nom)) {
+                                echo "Le nom est obligatoire.\n";
+                            } elseif (!Validator::alphanumeric($nom)) {
+                                echo "Le nom contient des caracteres non autorises.\n";
+                            } elseif (!Validator::length($nom, 2, 50)) {
+                                echo "Le nom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::required($nom) || !Validator::alphanumeric($nom) || !Validator::length($nom, 2, 50));
+                        
+                        do {
+                            echo "Description: ";
+                            $description = trim(fgets(STDIN));
+                            if (!Validator::required($description)) {
+                                echo "La description est obligatoire.\n";
+                            } elseif (!Validator::length($description, 5, 500)) {
+                                echo "La description doit contenir entre 5 et 500 caracteres.\n";
+                            }
+                        } while (!Validator::required($description) || !Validator::length($description, 5, 500));
                         
                         $data = [
                             'nom' => $nom,
@@ -347,13 +567,27 @@ while (true) {
                             break;
                         }
                         
-                        echo "Nom [" . $department['nom'] . "]: ";
-                        $nom = trim(fgets(STDIN));
-                        $nom = empty($nom) ? $department['nom'] : $nom;
+                        do {
+                            echo "Nom [" . $department['nom'] . "]: ";
+                            $nom = trim(fgets(STDIN));
+                            $nom = empty($nom) ? $department['nom'] : $nom;
+                            
+                            if (!Validator::alphanumeric($nom)) {
+                                echo "Le nom contient des caracteres non autorises.\n";
+                            } elseif (!Validator::length($nom, 2, 50)) {
+                                echo "Le nom doit contenir entre 2 et 50 caracteres.\n";
+                            }
+                        } while (!Validator::alphanumeric($nom) || !Validator::length($nom, 2, 50));
                         
-                        echo "Description [" . $department['description'] . "]: ";
-                        $description = trim(fgets(STDIN));
-                        $description = empty($description) ? $department['description'] : $description;
+                        do {
+                            echo "Description [" . $department['description'] . "]: ";
+                            $description = trim(fgets(STDIN));
+                            $description = empty($description) ? $department['description'] : $description;
+                            
+                            if (!Validator::length($description, 5, 500)) {
+                                echo "La description doit contenir entre 5 et 500 caracteres.\n";
+                            }
+                        } while (!Validator::length($description, 5, 500));
                         
                         $data = [
                             'nom' => $nom,
@@ -371,6 +605,11 @@ while (true) {
                         echo "=== Supprimer un departement ===\n";
                         echo "ID du departement a supprimer: ";
                         $id = trim(fgets(STDIN));
+                        
+                        if (!Validator::integer($id) || !Validator::positive($id)) {
+                            echo "ID invalide.\n";
+                            break;
+                        }
                         
                         echo "vous voulez supprimer ce departement? (oui/non): ";
                         $confirm = trim(fgets(STDIN));
